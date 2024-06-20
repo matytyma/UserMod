@@ -1,6 +1,7 @@
 package dev.matytyma.command
 
 import dev.kord.core.entity.interaction.ChatInputCommandInteraction
+import dev.kord.core.entity.interaction.MessageCommandInteraction
 import dev.kord.rest.builder.interaction.ChatInputCreateBuilder
 import dev.kord.rest.builder.interaction.MessageCommandCreateBuilder
 
@@ -12,4 +13,5 @@ interface ChatInputCommand {
 
 interface MessageCommand {
     fun register(): MessageCommandCreateBuilder.() -> Unit = {}
+    fun onUse(interaction: MessageCommandInteraction)
 }
