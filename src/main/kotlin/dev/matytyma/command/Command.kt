@@ -13,5 +13,5 @@ interface ChatInputCommand {
 
 interface MessageCommand {
     fun register(): MessageCommandCreateBuilder.() -> Unit = {}
-    fun onUse(interaction: MessageCommandInteraction)
+    suspend fun onUse(interaction: MessageCommandInteraction)
 }
