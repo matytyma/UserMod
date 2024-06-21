@@ -12,9 +12,7 @@ import kotlin.time.measureTime
 object ReloadCommand : ChatInputCommand {
     override val description = "Reloads all bot commands"
 
-    override suspend fun register(): ChatInputCreateBuilder.() -> Unit = {
-        disableCommandInGuilds()
-    }
+    override suspend fun register(): ChatInputCreateBuilder.() -> Unit = { disableCommandInGuilds() }
 
     override suspend fun onUse(interaction: ChatInputCommandInteraction) {
         val response = interaction.respondEphemeral { content = "Reloading commands..." }
