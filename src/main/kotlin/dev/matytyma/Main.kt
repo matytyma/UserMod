@@ -2,10 +2,11 @@ package dev.matytyma
 
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
-import dev.kord.core.behavior.interaction.ActionInteractionBehavior
 import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.behavior.reply
-import dev.kord.core.event.interaction.*
+import dev.kord.core.entity.interaction.ApplicationCommandInteraction
+import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
+import dev.kord.core.event.interaction.GuildMessageCommandInteractionCreateEvent
 import dev.kord.core.on
 import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
@@ -21,7 +22,7 @@ val chatInputCommands = mapOf(
 )
 
 val messageCommands = mapOf(
-    "report" to ReportCommand,
+    "Report" to ReportCommand,
 )
 
 suspend fun loadCommands() {
@@ -56,7 +57,7 @@ suspend fun main() {
     }
 }
 
-suspend fun executeActionInteraction(interaction: ActionInteractionBehavior, function: suspend () -> Unit) {
+suspend fun executeActionInteraction(interaction: ApplicationCommandInteraction, function: suspend () -> Unit) {
     runCatching {
         function()
     }.onFailure {
