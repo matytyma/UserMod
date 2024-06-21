@@ -10,28 +10,31 @@ import dev.kord.core.event.interaction.GuildMessageCommandInteractionCreateEvent
 import dev.kord.core.on
 import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
-import dev.matytyma.command.ReportCommand
+import dev.matytyma.command.*
 import dev.matytyma.command.admin.ReloadCommand
 
 lateinit var kord: Kord
 
 val GUILD_ID = Snowflake(System.getenv("GUILD_ID"))
 
-val chatInputCommands = mapOf(
+val chatInputCommands = mapOf<String, ChatInputCommand>(
     "reload" to ReloadCommand,
 )
 
-val messageCommands = mapOf(
+val messageCommands = mapOf<String, MessageCommand>(
     "Report" to ReportCommand,
 )
 
 suspend fun loadCommands() {
-    chatInputCommands.forEach {
-        kord.createGuildChatInputCommand(GUILD_ID, it.key, it.value.description, it.value.register())
-    }
-
-    messageCommands.forEach {
-        kord.createGuildMessageCommand(GUILD_ID, it.key, it.value.register())
+    kord.createGuildApplicationCommands(GUILD_ID) {
+        chatInputCommands.forEach {
+            val (name, command) = it
+            input(name, command.description, command.register())
+        }
+        messageCommands.forEach {
+            val (name, command) = it
+            message(name, command.register())
+        }
     }
 }
 
