@@ -1,8 +1,13 @@
 package dev.matytyma.command
 
-import dev.kord.core.behavior.channel.createEmbed
+import dev.kord.common.entity.ButtonStyle
+import dev.kord.core.behavior.channel.createMessage
 import dev.kord.core.behavior.interaction.response.respond
+import dev.kord.core.entity.effectiveName
 import dev.kord.core.entity.interaction.MessageCommandInteraction
+import dev.kord.rest.builder.message.actionRow
+import dev.kord.rest.builder.message.embed
+import dev.matytyma.GUILD_ID
 import dev.matytyma.kord
 
 object ReportCommand : MessageCommand {
@@ -27,8 +32,8 @@ object ReportCommand : MessageCommand {
                         interaction.target.asMessage().content + " https://discord.com/channels/${GUILD_ID}/${message.channelId}/${message.id}"
                 }
                 author {
-                    name = author?.effectiveName
-                    icon = author?.avatar?.cdnUrl?.toUrl()
+                    name = author.effectiveName
+                    icon = author.avatar?.cdnUrl?.toUrl()
                 }
                 footer {
                     text = "Reported by ${user.effectiveName}"
