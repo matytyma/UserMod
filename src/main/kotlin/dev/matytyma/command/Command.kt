@@ -5,13 +5,13 @@ import dev.kord.core.entity.interaction.MessageCommandInteraction
 import dev.kord.rest.builder.interaction.ChatInputCreateBuilder
 import dev.kord.rest.builder.interaction.MessageCommandCreateBuilder
 
-interface ChatInputCommand {
+interface ChatInputCommandExecutor {
     val description: String
     suspend fun register(): ChatInputCreateBuilder.() -> Unit = {}
     suspend fun onUse(interaction: ChatInputCommandInteraction)
 }
 
-interface MessageCommand {
+interface MessageCommandExecutor {
     fun register(): MessageCommandCreateBuilder.() -> Unit = {}
     suspend fun onUse(interaction: MessageCommandInteraction)
 }
