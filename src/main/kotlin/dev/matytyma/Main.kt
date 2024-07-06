@@ -12,10 +12,12 @@ import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
 import dev.matytyma.command.*
 import dev.matytyma.command.admin.ReloadCommand
+import io.github.cdimascio.dotenv.dotenv
+val dotenv = dotenv()
 
 lateinit var kord: Kord
 
-val GUILD_ID = Snowflake(System.getenv("GUILD_ID"))
+val GUILD_ID = Snowflake(dotenv["GUILD_ID"])
 
 val chatInputCommands = mapOf<String, ChatInputCommand>(
     "reload" to ReloadCommand,
@@ -39,7 +41,7 @@ suspend fun loadCommands() {
 }
 
 suspend fun main() {
-    kord = Kord(System.getenv("BOT_TOKEN"))
+    kord = Kord(dotenv["BOT_TOKEN"])
     loadCommands()
 
     kord.on<GuildChatInputCommandInteractionCreateEvent> {
