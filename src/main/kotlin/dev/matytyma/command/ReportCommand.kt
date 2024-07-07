@@ -1,51 +1,32 @@
 package dev.matytyma.command
 
-import dev.kord.common.entity.ButtonStyle
-import dev.kord.core.behavior.channel.createMessage
-import dev.kord.core.behavior.interaction.response.respond
-import dev.kord.core.entity.effectiveName
+import dev.kord.common.entity.TextInputStyle
+import dev.kord.core.behavior.interaction.modal
+import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.entity.interaction.MessageCommandInteraction
-import dev.kord.rest.builder.message.actionRow
-import dev.kord.rest.builder.message.embed
-import dev.matytyma.GUILD_ID
 import dev.matytyma.kord
+import dev.matytyma.modal.ReportModal
 
-object ReportCommand : MessageCommand {
+object ReportCommand : MessageCommandExecutor {
     override suspend fun onUse(interaction: MessageCommandInteraction) {
-        val deferredResponse = interaction.deferEphemeralResponse()
         val message = interaction.target.asMessage()
         val author = message.author
         val user = interaction.user
 
-        if (author == null || author == kord.getSelf()) {
-            deferredResponse.respond { content = "You can't report this message dummy" }
+        if (author == null || author == user || author == kord.getSelf()) {
+            interaction.respondEphemeral { content = "You can't report this message dummy" }
             return
         }
 
-        interaction.channel.createMessage {
-            embed {
-                title = "Message Report"
-                description = "The following message has been reported for breaking the rules"
-                field {
-                    name = "Reported Message"
-                    value =
-                        interaction.target.asMessage().content + " https://discord.com/channels/${GUILD_ID}/${message.channelId}/${message.id}"
-                }
-                author {
-                    name = author.effectiveName
-                    icon = author.avatar?.cdnUrl?.toUrl()
-                }
-                footer {
-                    text = "Reported by ${user.effectiveName}"
-                    icon = user.avatar?.cdnUrl?.toUrl()
-                }
-            }
+        interaction.modal("Report a Message", "report") {
             actionRow {
-                interactionButton(ButtonStyle.Success, "confirm") { label = "Confirm" }
-                interactionButton(ButtonStyle.Danger, "reject") { label = "Mark as false" }
-                linkButton("https://1.1.1.1") { label = "What's this?" }
+                textInput(TextInputStyle.Short, "reason", "Reason why you are reporting this message") {
+                    placeholder = "e.g. Scam"
+                    allowedLength = 4..50
+                }
             }
         }
-        deferredResponse.respond { content = "Reported!" }
+
+        ReportModal.reportedMessages[interaction.user] = message
     }
 }
