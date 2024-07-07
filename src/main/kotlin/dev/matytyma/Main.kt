@@ -69,8 +69,11 @@ suspend fun main() {
     }
 
     kord.on<ModalSubmitInteractionCreateEvent> {
-        println("phase one")
         executeActionInteraction(interaction) { modals[interaction.modalId]?.onSubmit(interaction) }
+    }
+
+    kord.on<ButtonInteractionCreateEvent> {
+
     }
 
     kord.login {
