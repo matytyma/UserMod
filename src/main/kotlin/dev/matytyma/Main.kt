@@ -11,6 +11,7 @@ import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
 import dev.matytyma.command.*
 import dev.matytyma.command.admin.ReloadCommand
+import dev.matytyma.component.button.ButtonExecutor
 import dev.matytyma.modal.ModalExecutor
 import dev.matytyma.modal.ReportModal
 import io.github.cdimascio.dotenv.dotenv
@@ -31,6 +32,10 @@ val messageCommands = mapOf<String, MessageCommandExecutor>(
 
 val modals = mapOf<String, ModalExecutor>(
     "report" to ReportModal,
+)
+
+val buttons = mapOf<String, ButtonExecutor>(
+
 )
 
 suspend fun loadCommands() {
@@ -56,10 +61,7 @@ suspend fun executeActionInteraction(interaction: ActionInteraction, function: s
     }
 }
 
-suspend fun main() {
-    kord = Kord(dotenv["BOT_TOKEN"])
-    loadCommands()
-
+suspend fun registerEvents() {
     kord.on<ChatInputCommandInteractionCreateEvent> {
         executeActionInteraction(interaction) { chatInputCommands[interaction.invokedCommandName]?.onUse(interaction) }
     }
@@ -73,8 +75,14 @@ suspend fun main() {
     }
 
     kord.on<ButtonInteractionCreateEvent> {
-
+        executeActionInteraction(interaction) { buttons[interaction.componentId]?.onClick(interaction) }
     }
+}
+
+suspend fun main() {
+    kord = Kord(dotenv["BOT_TOKEN"])
+    loadCommands()
+    registerEvents()
 
     kord.login {
         @OptIn(PrivilegedIntent::class)
