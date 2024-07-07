@@ -6,10 +6,10 @@ import dev.kord.core.behavior.interaction.response.edit
 import dev.kord.core.entity.interaction.ChatInputCommandInteraction
 import dev.kord.rest.builder.interaction.ChatInputCreateBuilder
 import dev.matytyma.*
-import dev.matytyma.command.ChatInputCommand
+import dev.matytyma.command.ChatInputCommandExecutor
 import kotlin.time.measureTime
 
-object ReloadCommand : ChatInputCommand {
+object ReloadCommand : ChatInputCommandExecutor {
     override val description = "Reloads all bot commands"
 
     override suspend fun register(): ChatInputCreateBuilder.() -> Unit = { disableCommandInGuilds() }
