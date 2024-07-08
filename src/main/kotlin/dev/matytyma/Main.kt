@@ -55,7 +55,7 @@ suspend fun loadCommands() {
 suspend fun executeActionInteraction(interaction: ActionInteraction, function: suspend () -> Unit) {
     runCatching { function() }.onFailure {
         println(it)
-        val messageContent = "Ooops, you found a bug...\n${codeBlock(it.stackTraceToString(), "java")}"
+        val messageContent = "Oops, you found a bug...\n${codeBlock(it.stackTraceToString(), "java")}"
         interaction.getOriginalInteractionResponseOrNull()?.reply { content = messageContent }
             ?: interaction.respondEphemeral { content = messageContent }
     }
