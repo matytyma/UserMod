@@ -6,5 +6,5 @@ import dev.matytyma.Report
 
 object ReportService {
     val pendingReportedMessages = mutableMapOf<User, Message>()
-    val pendingReports = setOf<Report>()
+    val pendingReports = mutableSetOf<Report>()
 }
