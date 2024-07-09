@@ -11,7 +11,7 @@ import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
 import dev.matytyma.command.*
 import dev.matytyma.command.admin.ReloadCommand
-import dev.matytyma.component.button.ButtonExecutor
+import dev.matytyma.component.button.*
 import dev.matytyma.modal.ModalExecutor
 import dev.matytyma.modal.ReportModal
 import io.github.cdimascio.dotenv.dotenv
@@ -34,8 +34,9 @@ val modals = mapOf<String, ModalExecutor>(
     "report" to ReportModal,
 )
 
-val buttons = mapOf<String, ButtonExecutor>(
-
+val buttons = mapOf(
+    "confirm" to ConfirmReportButton,
+    "reject" to RejectReportButton,
 )
 
 suspend fun loadCommands() {
