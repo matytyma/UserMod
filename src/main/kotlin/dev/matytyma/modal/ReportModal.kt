@@ -7,6 +7,8 @@ import dev.kord.core.entity.effectiveName
 import dev.kord.core.entity.interaction.ModalSubmitInteraction
 import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.embed
+import dev.matytyma.Report
+import dev.matytyma.service.ReportService.pendingReports
 import dev.matytyma.service.ReportService.pendingReportedMessages as reportedMessages
 
 object ReportModal : ModalExecutor {
@@ -36,6 +38,8 @@ object ReportModal : ModalExecutor {
                 interactionButton(ButtonStyle.Danger, "reject") { label = "Mark as false" }
             }
         }
+
+        pendingReports.add(Report(message, user))
 
         deferredResponse.respond { content = "Reported!" }
     }
