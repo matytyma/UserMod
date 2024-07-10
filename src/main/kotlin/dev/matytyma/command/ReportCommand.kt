@@ -4,7 +4,6 @@ import dev.kord.common.entity.TextInputStyle
 import dev.kord.core.behavior.interaction.modal
 import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.entity.interaction.MessageCommandInteraction
-import dev.matytyma.kord
 import dev.matytyma.service.ReportService.pendingReportedMessages as reportedMessages
 
 object ReportCommand : MessageCommandExecutor {
@@ -13,7 +12,7 @@ object ReportCommand : MessageCommandExecutor {
         val author = message.author
         val user = interaction.user
 
-        if (author == null || author == user || author == kord.getSelf()) {
+        if (author == null || author.isBot || author == user) {
             interaction.respondEphemeral { content = "You can't report this message dummy" }
             return
         }
