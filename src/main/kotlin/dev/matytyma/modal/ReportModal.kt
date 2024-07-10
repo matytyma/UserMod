@@ -2,7 +2,7 @@ package dev.matytyma.modal
 
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.core.behavior.channel.createMessage
-import dev.kord.core.behavior.interaction.response.respond
+import dev.kord.core.behavior.interaction.updateEphemeralMessage
 import dev.kord.core.entity.effectiveName
 import dev.kord.core.entity.interaction.ModalSubmitInteraction
 import dev.kord.rest.builder.message.actionRow
@@ -17,7 +17,7 @@ object ReportModal : ModalExecutor {
     private val REPORT_ROLE_MENTION = "<@&${dotenv["REPORT_ROLE_ID"]}>"
 
     override suspend fun onSubmit(interaction: ModalSubmitInteraction) {
-        val deferredResponse = interaction.deferEphemeralResponse()
+        interaction.updateEphemeralMessage {}
         val message = reportedMessages.remove(interaction.user) ?: return
         val author = message.author ?: return
         val user = interaction.user
@@ -48,7 +48,5 @@ object ReportModal : ModalExecutor {
                 interactionButton(ButtonStyle.Danger, "reject") { label = "Mark as false" }
             }
         }.let { pendingReports[it.id] = Report(message, user) }
-
-        deferredResponse.respond { content = "Reported!" }
     }
 }
