@@ -11,14 +11,14 @@ import dev.matytyma.Report
 import dev.matytyma.dotenv
 import dev.matytyma.service.ReportService.REPORT_SCORE_THRESHOLD
 import dev.matytyma.service.ReportService.pendingReports
-import dev.matytyma.service.ReportService.pendingReportedMessages as reportedMessages
+import dev.matytyma.service.ReportService.unfinishedReports
 
 object ReportModal : ModalExecutor {
     private val REPORT_ROLE_MENTION = "<@&${dotenv["REPORT_ROLE_ID"]}>"
 
     override suspend fun onSubmit(interaction: ModalSubmitInteraction) {
         interaction.updateEphemeralMessage {}
-        val message = reportedMessages.remove(interaction.user) ?: return
+        val message = unfinishedReports.remove(interaction.user) ?: return
         val author = message.author ?: return
         val user = interaction.user
 

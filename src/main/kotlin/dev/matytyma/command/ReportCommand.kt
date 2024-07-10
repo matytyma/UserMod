@@ -5,6 +5,7 @@ import dev.kord.core.behavior.interaction.modal
 import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.entity.interaction.MessageCommandInteraction
 import dev.matytyma.service.ReportService.pendingReportedMessages as reportedMessages
+import dev.matytyma.service.ReportService.unfinishedReports
 
 object ReportCommand : MessageCommandExecutor {
     override suspend fun onUse(interaction: MessageCommandInteraction) {
@@ -26,6 +27,6 @@ object ReportCommand : MessageCommandExecutor {
             }
         }
 
-        reportedMessages[interaction.user] = message
+        unfinishedReports[interaction.user] = message
     }
 }

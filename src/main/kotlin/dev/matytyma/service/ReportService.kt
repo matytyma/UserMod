@@ -8,6 +8,6 @@ import dev.matytyma.Report
 object ReportService {
     const val REPORT_SCORE_THRESHOLD = 5
 
-    val pendingReportedMessages = mutableMapOf<User, Message>()
+    val unfinishedReports = mutableMapOf<User, Message>()
     val pendingReports = mutableMapOf<Snowflake, Report>()
 }
