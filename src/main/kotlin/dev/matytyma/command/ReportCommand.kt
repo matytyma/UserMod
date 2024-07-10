@@ -4,8 +4,9 @@ import dev.kord.common.entity.TextInputStyle
 import dev.kord.core.behavior.interaction.modal
 import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.entity.interaction.MessageCommandInteraction
-import dev.matytyma.service.ReportService.pendingReportedMessages as reportedMessages
+import dev.matytyma.service.ReportService.pendingReports
 import dev.matytyma.service.ReportService.unfinishedReports
+import dev.matytyma.url
 
 object ReportCommand : MessageCommandExecutor {
     override suspend fun onUse(interaction: MessageCommandInteraction) {
@@ -15,6 +16,11 @@ object ReportCommand : MessageCommandExecutor {
 
         if (author == null || author.isBot || author == user) {
             interaction.respondEphemeral { content = "You can't report this message dummy" }
+            return
+        }
+
+        pendingReports.values.firstOrNull { it.message == message }?.let {
+            interaction.respondEphemeral { content = "This message has already been reported here: ${it.reportMessage.url()}" }
             return
         }
 

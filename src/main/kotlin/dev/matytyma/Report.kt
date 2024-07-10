@@ -7,6 +7,7 @@ import java.time.LocalDateTime
 
 data class Report(
     val message: Message,
+    val reportMessage: Message,
     val reporter: User,
 ) {
     val confirms = mutableListOf<User>()

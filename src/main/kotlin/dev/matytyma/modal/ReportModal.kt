@@ -47,6 +47,6 @@ object ReportModal : ModalExecutor {
                 interactionButton(ButtonStyle.Success, "confirm") { label = "Confirm" }
                 interactionButton(ButtonStyle.Danger, "reject") { label = "Mark as false" }
             }
-        }.let { pendingReports[it.id] = Report(message, user) }
+        }.let { pendingReports[it.id] = Report(message, it, user) }
     }
 }
