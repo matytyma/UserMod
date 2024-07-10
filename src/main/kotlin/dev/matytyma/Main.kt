@@ -11,7 +11,8 @@ import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
 import dev.matytyma.command.*
 import dev.matytyma.command.admin.ReloadCommand
-import dev.matytyma.component.button.*
+import dev.matytyma.component.button.ConfirmReportButton
+import dev.matytyma.component.button.RejectReportButton
 import dev.matytyma.modal.ModalExecutor
 import dev.matytyma.modal.ReportModal
 import io.github.cdimascio.dotenv.dotenv
@@ -55,7 +56,7 @@ suspend fun loadCommands() {
 
 suspend fun executeActionInteraction(interaction: ActionInteraction, function: suspend () -> Unit) {
     runCatching { function() }.onFailure {
-        println(it)
+        println(it.stackTraceToString())
         val messageContent = "Oops, you found a bug...\n${codeBlock(it.stackTraceToString(), "java")}"
         interaction.getOriginalInteractionResponseOrNull()?.reply { content = messageContent }
             ?: interaction.respondEphemeral { content = messageContent }
