@@ -37,9 +37,7 @@ object ReportModal : ModalExecutor {
                 interactionButton(ButtonStyle.Success, "confirm") { label = "Confirm" }
                 interactionButton(ButtonStyle.Danger, "reject") { label = "Mark as false" }
             }
-        }
-
-        pendingReports.add(Report(message, user))
+        }.let { pendingReports[it.id] = Report(message, user) }
 
         deferredResponse.respond { content = "Reported!" }
     }

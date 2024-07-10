@@ -14,4 +14,4 @@ data class Report(
     val timestamp = LocalDateTime.now()
 }
 
-val Message.report get() = pendingReports.first { it.message == this }
+val Message.report get() = pendingReports[id]!!
