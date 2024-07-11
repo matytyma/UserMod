@@ -21,7 +21,8 @@ object ReportModal : ModalExecutor {
         val author = message.author ?: return
         val user = interaction.user
 
-        if (queuedReports.contains(message)) {
+
+        if (synchronized(message) { queuedReports.contains(message) }) {
             interaction.respondEphemeral { content = "A report for this message is just being created, you should see it in a moment" }
             return
         }
@@ -61,6 +62,6 @@ object ReportModal : ModalExecutor {
         }.let { pendingReports[it.id] = Report(message, it, user) }
 
         interaction.channel.createMessage(REPORT_ROLE_MENTION).delete()
-        queuedReports.remove(message)
+        synchronized(message) { queuedReports.remove(message) }
     }
 }
