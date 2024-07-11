@@ -21,9 +21,10 @@ object ReportModal : ModalExecutor {
         val author = message.author ?: return
         val user = interaction.user
 
-
         if (synchronized(message) { queuedReports.contains(message) }) {
-            interaction.respondEphemeral { content = "A report for this message is just being created, you should see it in a moment" }
+            interaction.respondEphemeral {
+                content = "A report for this message is just being created, you should see it in a moment"
+            }
             return
         }
 
