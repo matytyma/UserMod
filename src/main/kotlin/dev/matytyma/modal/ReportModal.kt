@@ -10,6 +10,7 @@ import dev.kord.rest.builder.message.embed
 import dev.matytyma.*
 import dev.matytyma.service.ReportService.REPORT_SCORE_THRESHOLD
 import dev.matytyma.service.ReportService.pendingReports
+import dev.matytyma.service.ReportService.queuedReports
 import dev.matytyma.service.ReportService.unfinishedReports
 
 object ReportModal : ModalExecutor {
@@ -20,6 +21,11 @@ object ReportModal : ModalExecutor {
         val author = message.author ?: return
         val user = interaction.user
 
+        if (queuedReports.contains(message)) {
+            interaction.respondEphemeral { content = "A report for this message is just being created, you should see it in a moment" }
+            return
+        }
+
         pendingReports.values.firstOrNull { it.message == message }?.let {
             interaction.respondEphemeral {
                 content = "Someone filled the modal quicker and got their report here: ${it.reportMessage.url()}"
@@ -27,6 +33,7 @@ object ReportModal : ModalExecutor {
             return
         }
 
+        queuedReports.add(message)
         interaction.deferEphemeralMessageUpdate()
 
         interaction.channel.createMessage {
@@ -52,6 +59,8 @@ object ReportModal : ModalExecutor {
                 interactionButton(ButtonStyle.Danger, "reject") { label = "Mark as false" }
             }
         }.let { pendingReports[it.id] = Report(message, it, user) }
+
         interaction.channel.createMessage(REPORT_ROLE_MENTION).delete()
+        queuedReports.remove(message)
     }
 }
